@@ -34,15 +34,16 @@ the length of the base set.
 
 By Sebastian Raaphorst, 2009."""
 
-from . import combfuncs
+from builtins import range
 
+from . import combfuncs
 
 def rank(B, K):
     """Return the rank of k-subset K in base set B."""
 
     block = (K if type(B) == int else [B[1][i] for i in K])
     k = len(block)
-    return sum([(1 if i%2 == k%2 else -1) * combfuncs.binom(block[i-1]+1,i) for i in xrange(k,0,-1)]) + (0 if k%2 == 0 else -1)
+    return sum([(1 if i%2 == k%2 else -1) * combfuncs.binom(block[i-1]+1,i) for i in range(k,0,-1)]) + (0 if k%2 == 0 else -1)
 
 
 def unrank(B, k, rk):
@@ -51,7 +52,7 @@ def unrank(B, k, rk):
     v = (B if type(B) == int else len(B[0]))
 
     K = [0] * k
-    for i in xrange(k,0,-1):
+    for i in range(k,0,-1):
         while combfuncs.binom(v,i) > rk:
             v -= 1
         K[i-1] = v
@@ -85,7 +86,7 @@ def succ(B, K):
             Kn[j+1] = Kn[j]
             Kn[j] = j
 
-    if Kn[:k] == range(k):
+    if Kn[:k] == list(range(k)):
         return None
     return (Kn[:k] if type(B) == int else [B[0][i] for i in Kn[:k]])
 
@@ -97,7 +98,7 @@ def all(B, k):
    # the module introduction; thus, if B changes, the iterator does not
    # become invalid.
     Bn = (B if type(B) == int else (B[0][:], dict(B[1])))
-    K = (range(k) if type(B) == int else Bn[0][:k])
+    K = (list(range(k)) if type(B) == int else Bn[0][:k])
     while K != None:
         yield K
         K = succ(Bn, K)

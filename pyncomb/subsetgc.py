@@ -40,8 +40,9 @@ the length of the base set.
 
 By Sebastian Raaphorst, 2009."""
 
-from . import combfuncs
+from builtins import range
 
+from . import combfuncs
 
 def rank(B, S):
     """Return the rank of the subset S in the base set B."""
@@ -50,7 +51,7 @@ def rank(B, S):
     b = 0
 
     n = (B if type(B) == int else len(B[0]))
-    for i in xrange(n-1,-1,-1):
+    for i in range(n-1,-1,-1):
         elem = (n-i-1 if type(B) == int else B[0][n-i-1])
         if elem in S:
             b = 1 - b
@@ -66,8 +67,8 @@ def unrank(B, rk):
     bp = 0
 
     n = (B if type(B) == int else len(B[0]))
-    for i in xrange(n-1,-1,-1):
-        b = rk / (1 << i)
+    for i in range(n-1,-1,-1):
+        b = rk // (1 << i)
         if b != bp:
             S.append((n-i-1 if type(B) == int else B[0][n-i-1]))
             bp = b

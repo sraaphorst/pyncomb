@@ -34,15 +34,16 @@ the length of the base set.
 
 By Sebastian Raaphorst, 2009."""
 
-from . import combfuncs
+from builtins import range
 
+from . import combfuncs
 
 def rank(B, K):
     """Return the rank of k-subset K in base set B."""
 
     k = len(K)
     rk = 0
-    for i in xrange(k):
+    for i in range(k):
         n = (K[k-i-1] if type(B) == int else B[1][K[k-i-1]])
         rk += (0 if k-i > n else combfuncs.binom(n,k-i))
     return rk
@@ -54,7 +55,7 @@ def unrank(B, k, rk):
     x = (B-1 if type(B) == int else len(B[0])-1)
 
     K = [0] * k
-    for i in xrange(k):
+    for i in range(k):
         while combfuncs.binom(x,k-i) > rk:
             x -= 1
         K[k-i-1] = (x if type(B) == int else B[0][x])
@@ -71,7 +72,7 @@ def succ(B, K):
     # 0 to i-1, and copy from i+1 on.
     k = len(K)
     maxelem = (B-1 if type(B) == int else B[0][-1])
-    for i in xrange(k):
+    for i in range(k):
         if i < k-1:
             nextelem = (K[i]+1 if type(B) == int else B[0][B[1][K[i]]+1])
             if K[i+1] != nextelem:

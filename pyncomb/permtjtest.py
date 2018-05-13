@@ -19,6 +19,8 @@
 By Sebastian Raaphorst, 2009."""
 
 import unittest
+from functools import reduce
+
 from . import permtj
 from . import combfuncs
 

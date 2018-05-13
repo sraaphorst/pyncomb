@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from builtins import range
+from functools import reduce
+
 """Combinatorial functions for manipulating tuples (represented as lists) over
 mixed base sets, ordered by lexicographical ordering.
 
@@ -49,7 +52,7 @@ def rank(B, T):
 
     rank = 0
     posMult = 1
-    for i in xrange(len(T)):
+    for i in range(len(T)):
         idx = len(T)-i-1
         rank += (posMult * T[idx] if type(B[idx]) == int else posMult * B[idx][1][T[idx]])
         posMult *= (B[idx] if type(B[idx]) == int else len(B[idx][0]))
@@ -63,12 +66,12 @@ def unrank(B, rk):
     T = [0] * len(B)
     posMult = reduce(lambda a,b:a*b, [(i if type(i) == int else len(i[0])) for i in B])
 
-    for i in xrange(len(B)):
+    for i in range(len(B)):
         # Adjust posMult to represent the seeker for position i.
-        posMult /= (B[i] if type(B[i]) == int else len(B[i][0]))
+        posMult //= (B[i] if type(B[i]) == int else len(B[i][0]))
 
         # Determine the index of the element in position i.
-        idx = rk / posMult
+        idx = rk // posMult
 
         # Translate this to an actual element.
         T[i] = (idx if type(B[i]) == int else B[i][0][idx])
@@ -86,7 +89,7 @@ def succ(B, T):
     See the library description for how base representations work."""
 
     Tnew = T[:]
-    for i in xrange(len(B)):
+    for i in range(len(B)):
         # Increase the entry in position len(B)-i-1 if possible (i.e. we work
         # right-to-left).
         idx = len(B)-i-1
@@ -118,7 +121,7 @@ def succ(B, T):
 
 def all(B):
     """A generator to create all tuples over the supplied mixed base B."""
-    T = [(0 if type(B[i]) == int else B[i][0][0]) for i in xrange(len(B))]
+    T = [(0 if type(B[i]) == int else B[i][0][0]) for i in range(len(B))]
     while T != None:
         yield T
         T = succ(B,T)

@@ -22,23 +22,25 @@ with P[i] = j meaning that P maps i to j.
 
 By Sebastian Raaphorst, 2009."""
 
-from . import combfuncs
+from functools import reduce
+from builtins import range
 
+from . import combfuncs
 
 def rank(n, P):
     """Return the rank of a permutation P in Sn."""
 
     rk = 0
-    Pn = P[:]
+    Pn = list(P[:])
 
     # Calculate (n-1)!
     fac = reduce(lambda x,y:x*y, range(1,n), 1)
 
     # Now loop to calculate the rank.
-    for j in xrange(n):
+    for j in range(n):
         rk += Pn[j] * fac
         if n != j+1:
-            fac /= (n - j - 1)
+            fac //= (n - j - 1)
         for i in range(j+1,n):
             if Pn[i] > Pn[j]:
                 Pn[i] -= 1
@@ -53,12 +55,12 @@ def unrank(n, rk):
     # Store (j+1)! for calculation.
 
     fac = 1
-    for j in xrange(n-1):
+    for j in range(n-1):
         fac *= (j+1)
-        d = (rk % (fac * (j+2))) / fac
+        d = (rk % (fac * (j+2))) // fac
         rk -= d * fac
         P[n-j-2] = d
-        for i in xrange(n-j-1,n):
+        for i in range(n-j-1,n):
             if P[i] > d-1:
                 P[i] += 1
     return P
@@ -87,7 +89,7 @@ def succ(n, P):
 def all(n):
     """A generator to create all permutations in Sn."""
 
-    P = range(n)
+    P = list(range(n))
     while P != None:
         yield P
         P = succ(n, P)

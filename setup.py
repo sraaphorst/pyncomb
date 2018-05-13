@@ -18,6 +18,7 @@ setup(name='pyncomb',
           1.0.1: Attempting to fix mysterious bug regarding imports.
           1.0.0: Initial release.
       """,
+      install_requires=['future'],
       classifiers=[
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',

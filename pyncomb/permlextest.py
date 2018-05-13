@@ -19,6 +19,7 @@
 By Sebastian Raaphorst, 2009."""
 
 import unittest
+from functools import reduce
 from . import permlex
 from . import combfuncs
 

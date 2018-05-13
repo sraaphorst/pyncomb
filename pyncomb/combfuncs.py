@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from functools import reduce
+from builtins import range
+
 """Various combinatorial functions used by the pyncomb library, and
 useful in and of their own right."""
 
@@ -44,8 +47,8 @@ def binom(n, k, store=True):
     # Use dynamic programming to fill in the rest.
     if store:
         # We fill in all entries of the table from Cmax to n.
-        for i in xrange(_Cmax+1,n+1):
-            _C.append([(_C[i-1][j] if j < i else 0) + (_C[i-1][j-1] if j > 0 else 0) for j in xrange(i+1)])
+        for i in range(_Cmax+1,n+1):
+            _C.append([(_C[i-1][j] if j < i else 0) + (_C[i-1][j-1] if j > 0 else 0) for j in range(i+1)])
         _Cmax = n
         return _C[n][k]
 
@@ -54,14 +57,14 @@ def binom(n, k, store=True):
         # Due to the fact that we are unlikely to see them again or not often, we do
         # not want to dedicate memory to extend Pascal's triangle as it will seldom be
         # used.
-        return reduce(lambda a,b: a*(n-b)/(b+1), xrange(k), 1)
+        return reduce(lambda a,b: a*(n-b)/(b+1), range(k), 1)
 
 
 def permCount(n,k):
     """Calculate P(n,k) = n!/(n-k)!, the number of permutations over n objects, taking
     k of them at a time."""
 
-    return binom(n,k) * reduce(lambda a,b:a*b, xrange(1,k+1), 1)
+    return binom(n,k) * reduce(lambda a,b:a*b, range(1,k+1), 1)
 
 
 def createLookup(B):
@@ -90,7 +93,7 @@ def createLookup(B):
 
     # Handle flat lists.
     if reduce(lambda a,b:a and b, [type(i) != list for i in B], True):
-        return (B, dict([(B[i], i) for i in xrange(len(B))]))
+        return (B, dict([(B[i], i) for i in range(len(B))]))
 
     # Handle nested lists.
     Bn = []
@@ -98,5 +101,5 @@ def createLookup(B):
         if type(D) == int:
             Bn.append(D)
         else:
-            Bn.append((D, dict([(D[i],i) for i in xrange(len(D))])))
+            Bn.append((D, dict([(D[i],i) for i in range(len(D))])))
     return Bn

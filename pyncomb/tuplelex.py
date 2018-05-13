@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from builtins import range
+
 """Combinatorial functions for manipulating tuples (represented as lists) over
 a base set, ordered by lexicographical ordering.
 
@@ -45,7 +47,7 @@ def rank(B, T):
 
     rank = 0
     posMult = 1
-    for i in xrange(len(T)):
+    for i in range(len(T)):
         idx = len(T)-i-1
         rank += (posMult * T[idx] if type(B) == int else posMult * B[1][T[idx]])
         posMult *= (B if type(B) == int else len(B[0]))
@@ -60,12 +62,12 @@ def unrank(B, k, rk):
     mult = (B if type(B) == int else len(B[0]))
     posMult = mult ** k
 
-    for i in xrange(k):
+    for i in range(k):
         # Adjust posMult to represent the seeker for position i.
         posMult /= mult
 
         # Determine the index of the element in position i.
-        idx = rk / posMult
+        idx = int(rk / posMult)
 
         # Translate this to an actual element.
         T[i] = (idx if type(B) == int else B[0][idx])
@@ -83,7 +85,7 @@ def succ(B, T):
     See the library description for how base representations work."""
 
     Tnew = T[:]
-    for i in xrange(len(Tnew)):
+    for i in range(len(Tnew)):
         # Increase the entry in position len(Tnew)-i-1 if possible (i.e. we work
         # right-to-left).
         idx = len(Tnew)-i-1
@@ -115,7 +117,7 @@ def succ(B, T):
 
 def all(B, k):
     """A generator to create all k-tuples over the supplied mixed base B."""
-    T = [(0 if type(B) == int else B[0][0]) for i in xrange(k)]
+    T = [(0 if type(B) == int else B[0][0]) for i in range(k)]
     while T != None:
         yield T
         T = succ(B,T)
